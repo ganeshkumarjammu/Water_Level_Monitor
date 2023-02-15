@@ -1,15 +1,14 @@
 // Define the pins for the ultrasonic sensor, water pump, and LEDs
-const int trigPin = 9;
-const int echoPin = 10;
-const int pumpPin = 6;
-const int redLedPin = 2;
-const int greenLedPin = 4;
-const int yellowLedPin = 3;
+const int trigPin = 10;
+const int echoPin = 9;
+const int pumpPin = 5;
+const int redLedPin = 13;
+const int greenLedPin = 12;
+const int yellowLedPin = 11;
 
 // Define the water level thresholds in centimeters
-const int highLevel = 30;
 const int mediumLevel = 20;
-const int lowLevel = 10;
+const int lowLevel = 12;
 
 void setup() {
   // Initialize the serial communication for debugging
@@ -41,17 +40,17 @@ void loop() {
   Serial.println(distance);
 
   // Determine the water level and turn on the appropriate LED
-  if (distance >= highLevel) {
+  if (distance > mediumLevel) {
     digitalWrite(redLedPin, HIGH);
     digitalWrite(yellowLedPin, LOW);
     digitalWrite(greenLedPin, LOW);
     digitalWrite(pumpPin, HIGH);
-  } else if (distance >= mediumLevel) {
+  } else if ((distance <= mediumLevel ) && (distance >= lowLevel )) {
     digitalWrite(redLedPin, LOW);
     digitalWrite(yellowLedPin, HIGH);
     digitalWrite(greenLedPin, LOW);
     digitalWrite(pumpPin, LOW);
-  } else if (distance >= lowLevel) {
+  } else if (distance < lowLevel) {
     digitalWrite(redLedPin, LOW);
     digitalWrite(yellowLedPin, LOW);
     digitalWrite(greenLedPin, HIGH);
@@ -59,7 +58,7 @@ void loop() {
   } else {
     digitalWrite(redLedPin, LOW);
     digitalWrite(yellowLedPin, LOW);
-    digitalWrite(greenLedPin, LOW);
+    digitalWrite(greenLedPin, HIGH);
     digitalWrite(pumpPin, LOW);
   }
 
